@@ -393,6 +393,11 @@ function initializeShortcuts() {
 // Initialize shortcuts on page load
 initializeShortcuts();
 
+// Auto-start test on page load
+window.addEventListener('load', () => {
+    start_test();
+});
+
 for (const element of document.querySelectorAll(".shortcut-input")) {
     element.addEventListener("keydown", (e) => {
         e.preventDefault();
