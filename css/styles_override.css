@@ -186,3 +186,19 @@ input {
     align-items: center;
     margin-top: 1px;
 }
+
+/* Remove frame - keep layout intact */
+body {
+    background-color: #fff !important;
+    padding-bottom: 0 !important;
+}
+
+.container {
+    border-radius: 0 !important;
+}
+
+@media (prefers-color-scheme: dark) {
+    body {
+        background-color: #212529 !important;
+    }
+}
