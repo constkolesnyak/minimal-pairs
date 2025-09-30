@@ -368,6 +368,31 @@ document.addEventListener("keydown", (e) => {
     }
 });
 
+// Initialize shortcuts from HTML input values
+function initializeShortcuts() {
+    for (const element of document.querySelectorAll(".shortcut-input")) {
+        const inputValue = element.value;
+        const shortcutId = element.id;
+        
+        // Parse the input value to get the key
+        let key = inputValue;
+        if (inputValue === "Space") {
+            key = " ";
+        }
+        
+        shortcuts[shortcutId] = {
+            ctrl: false,
+            shift: false,
+            alt: false,
+            meta: false,
+            key: key,
+        };
+    }
+}
+
+// Initialize shortcuts on page load
+initializeShortcuts();
+
 for (const element of document.querySelectorAll(".shortcut-input")) {
     element.addEventListener("keydown", (e) => {
         e.preventDefault();
