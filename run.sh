@@ -1,4 +1,3 @@
-python3 -m http.server --bind localhost &
-sleep 1
-open http://localhost:8000
-wait
+#!/bin/bash
+# Use the robust Python server script that handles port conflicts
+python3 server.py
