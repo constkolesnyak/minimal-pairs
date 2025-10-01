@@ -4,6 +4,7 @@ version = '0.1'
 description = 'Japanese pitch accent minimal pairs perception test'
 authors = ['-']
 readme = 'README.md'
+package-mode = true
 packages = [{ include = 'minimal_pairs' }]
 
 [tool.poetry.scripts]
@@ -18,5 +19,5 @@ uvicorn = "^0.37.0"
 
 
 [build-system]
-requires = ['poetry-core']
+requires = ['poetry-core>=2.0.0,<3.0.0']
 build-backend = 'poetry.core.masonry.api'
