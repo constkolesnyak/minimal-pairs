@@ -13,7 +13,7 @@ body {
 }
 
 input[type=checkbox]:not(:checked) ~ .spoiler {
-    background-color: #333;
+    background-color: #374151;
     color: transparent;
     user-select: none;
     transition: color .25s, background-color .25s;
@@ -109,13 +109,32 @@ input[type=checkbox]:checked ~ .spoiler {
     border-bottom-left-radius: inherit;
 }
 
+/* History items styling - much darker */
+#pairs-history .list-group-item {
+    background-color: #1F2937;
+    border-color: #374151;
+    color: #D1D5DB;
+}
+
+#pairs-history .list-group-item-success {
+    background-color: #022C22;
+    border-color: #064E3B;
+    color: #A7F3D0;
+}
+
+#pairs-history .list-group-item-danger {
+    background-color: #451A03;
+    border-color: #7C2D12;
+    color: #FCA5A5;
+}
+
 @media (prefers-color-scheme:dark) {
     .text-muted {
-        color: #DEE2E6;
-        opacity: 0.75;
+        color: #D1D5DB;
+        opacity: 0.85;
     }
     code {
-        color: #e685b5;
+        color: #F8A5C2;
     }
     a {
         color: #6EA8FE;
@@ -124,10 +143,29 @@ input[type=checkbox]:checked ~ .spoiler {
         color: #8BB9FE;
     }
     .alert {
-        background-color: #1a1d20;
-        color: #dee2e6;
-        border-color: #343a40;
+        background-color: #1F2937;
+        color: #E5E7EB;
+        border-color: #374151;
     }
+    
+    #kana-text {
+        color: #F8A5C2 !important;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3) !important;
+    }
+    
+    .order-1.order-lg-2 h4,
+    .order-2.order-lg-0 h4 {
+        color: #A5B4FC !important;
+    }
+    
+    marking-element.overline, marking-element.drop {
+        border-top-color: #F8A5C2;
+    }
+    
+    marking-element.drop::after {
+        background: #F8A5C2;
+    }
+    
 }
 
 @media (prefers-color-scheme:light) {
@@ -149,11 +187,11 @@ input[type=checkbox]:checked ~ .spoiler {
 }
 
 :root[data-bad-pitch-checkboxes="true"] .pair-checkbox-input:checked {
-    background-color: #fd0d0d;
+    background-color: #E76F51;
 }
 
 :root[data-bad-pitch-checkboxes="true"] .pair-checkbox-input {
-    border-color: #fd0d0d;
+    border-color: #E76F51;
 }
 
 .shortcut-wrapper {
@@ -218,7 +256,7 @@ body {
 .order-1.order-lg-2 h4,
 .order-2.order-lg-0 h4 {
     font-size: 1.7rem !important;
-    color: lightskyblue
+    color: #8B9DC3;
 }
 
 .order-1.order-lg-2 label,
@@ -227,5 +265,6 @@ body {
 }
 
 #kana-text {
-    color: #e685b5
+    color: #E76F51;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
