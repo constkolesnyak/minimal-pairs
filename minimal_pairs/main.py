@@ -34,7 +34,7 @@ def main() -> None:
         print('No available ports found')
         exit(1)
 
-    print(f'Server running on http://localhost:{port}')
+    print(f'Serving on http://localhost:{port}\nPress Ctrl+C to stop')
     threading.Thread(
         target=lambda: (
             time.sleep(0.5),
