@@ -6,5 +6,6 @@
     "statusBarItem.remoteBackground": "#a33a02",
     "statusBarItem.remoteForeground": "#e7e7e7"
   },
-  "peacock.color": "#a33a02"
+  "peacock.color": "#a33a02",
+  "cSpell.words": ["kmpt"]
 }
