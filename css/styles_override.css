@@ -19,7 +19,7 @@ input[type=checkbox]:not(:checked) ~ .spoiler {
     transition: color .25s, background-color .25s;
 }
 
-input[type=checkbox]:checked ~ .spoiler { 
+input[type=checkbox]:checked ~ .spoiler {
   background-color: inherit;
   color: inherit;
   user-select: auto;
@@ -201,4 +201,28 @@ body {
     body {
         background-color: #212529 !important;
     }
+}
+
+/* Make test words bigger */
+#kana-text {
+    font-size: 3rem !important;
+    font-weight: bold;
+}
+
+/* Make answer buttons bigger */
+#answer-button-row button,
+#graded-answer-button-row button {
+    font-size: 1.5rem !important;
+    padding: 0.75rem 1.25rem !important;
+}
+
+.order-1.order-lg-2 h4,
+.order-2.order-lg-0 h4 {
+    font-size: 1.7rem !important;
+    color: lightskyblue
+}
+
+.order-1.order-lg-2 label,
+.order-1.order-lg-2 span {
+    font-size: 1.3rem !important;
 }
