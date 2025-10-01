@@ -1,4 +1,4 @@
-import {pairs_index} from "./pairs_index.js"
+import { pairs_index } from "./pairs_index.js";
 
 // globals
 let test_started = false;
@@ -87,19 +87,19 @@ function update_answer_stats(pitch_type, is_correct_answer) {
     if (pitch_type === "heiban") {
         correct_heiban_count += is_correct_answer_int;
         heiban_count += 1;
-        document.getElementById("heiban-answers").innerHTML = "<strong>Heiban / Odaka:</strong> " + correct_heiban_count + " of " + heiban_count + " (" + Math.floor(correct_heiban_count / heiban_count * 100) + "%)";
+        document.getElementById("heiban-answers").innerHTML = "平板・尾高： " + correct_heiban_count + " of " + heiban_count + " (" + Math.floor(correct_heiban_count / heiban_count * 100) + "%)";
     } else if (pitch_type === "atamadaka") {
         correct_atamadaka_count += is_correct_answer_int;
         atamadaka_count += 1;
-        document.getElementById("atamadaka-answers").innerHTML = "<strong>Atamadaka:</strong> " + correct_atamadaka_count + " of " + atamadaka_count + " (" + Math.floor(correct_atamadaka_count / atamadaka_count * 100) + "%)";
+        document.getElementById("atamadaka-answers").innerHTML = "頭高： " + correct_atamadaka_count + " of " + atamadaka_count + " (" + Math.floor(correct_atamadaka_count / atamadaka_count * 100) + "%)";
     } else if (pitch_type === "nakadaka") {
         correct_nakadaka_count += is_correct_answer_int;
         nakadaka_count += 1;
-        document.getElementById("nakadaka-answers").innerHTML = "<strong>Nakadaka:</strong> " + correct_nakadaka_count + " of " + nakadaka_count + " (" + Math.floor(correct_nakadaka_count / nakadaka_count * 100) + "%)";
+        document.getElementById("nakadaka-answers").innerHTML = "中高： " + correct_nakadaka_count + " of " + nakadaka_count + " (" + Math.floor(correct_nakadaka_count / nakadaka_count * 100) + "%)";
     }
     let correct_all_count = correct_heiban_count + correct_atamadaka_count + correct_nakadaka_count;
     let all_count = heiban_count + atamadaka_count + nakadaka_count;
-    document.getElementById("all-answers").innerHTML = "<strong>All:</strong> " + correct_all_count + " of " + all_count + " (" + Math.floor(correct_all_count / all_count * 100) + "%)<br>";
+    document.getElementById("all-answers").innerHTML = "全て： " + correct_all_count + " of " + all_count + " (" + Math.floor(correct_all_count / all_count * 100) + "%)<br>";
 }
 
 function update_history(correct_answer, is_correct_answer) {
@@ -373,13 +373,13 @@ function initializeShortcuts() {
     for (const element of document.querySelectorAll(".shortcut-input")) {
         const inputValue = element.value;
         const shortcutId = element.id;
-        
+
         // Parse the input value to get the key
         let key = inputValue;
         if (inputValue === "Space") {
             key = " ";
         }
-        
+
         shortcuts[shortcutId] = {
             ctrl: false,
             shift: false,
