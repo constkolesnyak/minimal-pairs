@@ -18,7 +18,7 @@ async def read_index() -> FileResponse:
     return FileResponse('index.html')
 
 
-if __name__ == '__main__':
+def main():
     for port in range(8000, 8050):
         try:
             with socket.socket() as s:
@@ -34,5 +34,9 @@ if __name__ == '__main__':
     threading.Thread(
         target=lambda: (time.sleep(1), webbrowser.open(f'http://localhost:{port}')), daemon=True
     ).start()
-
+    
     uvicorn.run(app, host='localhost', port=port, log_level='warning')
+
+
+if __name__ == '__main__':
+    main()
