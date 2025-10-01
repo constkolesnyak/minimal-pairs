@@ -49,6 +49,13 @@ let shortcuts = {
         meta: false,
         key: "r"
     },
+    quit: {
+        ctrl: false,
+        shift: false,
+        alt: false,
+        meta: false,
+        key: "q"
+    },
 }
 
 function start_test() {
@@ -256,6 +263,20 @@ function play_pair_audio() {
     audio_player.play();
 }
 
+function quit_application() {
+    fetch('/shutdown', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({})
+    }).catch(() => {
+        // Ignore errors - server might already be shutting down
+    });
+
+    window.close();
+}
+
 async function raw_request_audio() {
     let json_file_id = get_json_id();
     if (json_file_id === null) {
@@ -360,6 +381,10 @@ document.addEventListener("keydown", (e) => {
         }
         case "play_audio": {
             play_pair_audio();
+            break;
+        }
+        case "quit": {
+            quit_application();
             break;
         }
         default: {

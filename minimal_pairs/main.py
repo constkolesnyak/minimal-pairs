@@ -76,11 +76,7 @@ def main() -> None:
     signal.signal(signal.SIGTERM, stop_server)
     signal.signal(signal.SIGINT, stop_server)
 
-    print(
-        f'Serving on http://localhost:{port}\n'
-        'Server will automatically stop when you close the browser window.\n'
-        'Press Ctrl+C to stop manually.'
-    )
+    print(f'Serving on http://localhost:{port}\nPress "q" in the browser to quit.')
 
     try:
         uvicorn.run(app, host='localhost', port=port, log_level='warning')
