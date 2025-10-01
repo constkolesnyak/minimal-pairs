@@ -13,6 +13,65 @@ let correct_atamadaka_count = 0;
 let nakadaka_count = 0;
 let correct_nakadaka_count = 0;
 
+const percentElementIds = [
+    "all-answers-percent",
+    "heiban-answers-percent",
+    "atamadaka-answers-percent",
+    "nakadaka-answers-percent",
+];
+
+function computePercentColor(percentValue) {
+    const clampedPercent = Math.max(0, Math.min(100, percentValue));
+    if (clampedPercent <= 50) {
+        return "hsl(0, 72%, 52%)";
+    }
+
+    const blendRatio = (clampedPercent - 50) / 50;
+    const hue = Math.round(blendRatio * 120);
+    return `hsl(${hue}, 68%, 45%)`;
+}
+
+function applyPercentColor(elementId, percentValue, additionalElements = []) {
+    const element = document.getElementById(elementId);
+    const targets = [];
+
+    if (element) {
+        targets.push(element);
+    }
+
+    for (const extraElement of additionalElements) {
+        if (extraElement) {
+            targets.push(extraElement);
+        }
+    }
+
+    if (!targets.length) {
+        return;
+    }
+
+    const color = computePercentColor(percentValue);
+
+    for (const target of targets) {
+        target.style.color = color;
+    }
+}
+
+function initializePercentColors() {
+    const allPatternName = document.querySelector(".patterns-table tr:first-child");
+
+    for (const elementId of percentElementIds) {
+        const element = document.getElementById(elementId);
+        if (!element) {
+            continue;
+        }
+
+        const numericText = parseInt(element.textContent, 10);
+        const percentValue = Number.isNaN(numericText) ? 0 : numericText;
+        const extras = elementId === "all-answers-percent" ? [allPatternName] : [];
+        applyPercentColor(elementId, percentValue, extras);
+    }
+}
+
 let shortcuts = {
     answer_button_1: {
         ctrl: false,
@@ -94,19 +153,48 @@ function update_answer_stats(pitch_type, is_correct_answer) {
     if (pitch_type === "heiban") {
         correct_heiban_count += is_correct_answer_int;
         heiban_count += 1;
-        document.getElementById("heiban-answers").innerHTML = "平板・尾高： " + correct_heiban_count + " of " + heiban_count + " (" + Math.floor(correct_heiban_count / heiban_count * 100) + "%)";
+        let percent = Math.floor(correct_heiban_count / heiban_count * 100);
+        let count_text = "" + correct_heiban_count + " of " + heiban_count;
+        // Update old format for compatibility
+        document.getElementById("heiban-answers").innerHTML = count_text + " (" + percent + "%)";
+        // Update new 3-column table
+        document.getElementById("heiban-answers-percent").innerHTML = percent + "%";
+        document.getElementById("heiban-answers-count").innerHTML = count_text;
+        applyPercentColor("heiban-answers-percent", percent);
     } else if (pitch_type === "atamadaka") {
         correct_atamadaka_count += is_correct_answer_int;
         atamadaka_count += 1;
-        document.getElementById("atamadaka-answers").innerHTML = "頭高： " + correct_atamadaka_count + " of " + atamadaka_count + " (" + Math.floor(correct_atamadaka_count / atamadaka_count * 100) + "%)";
+        let percent = Math.floor(correct_atamadaka_count / atamadaka_count * 100);
+        let count_text = "" + correct_atamadaka_count + " of " + atamadaka_count;
+        // Update old format for compatibility
+        document.getElementById("atamadaka-answers").innerHTML = count_text + " (" + percent + "%)";
+        // Update new 3-column table
+        document.getElementById("atamadaka-answers-percent").innerHTML = percent + "%";
+        document.getElementById("atamadaka-answers-count").innerHTML = count_text;
+        applyPercentColor("atamadaka-answers-percent", percent);
     } else if (pitch_type === "nakadaka") {
         correct_nakadaka_count += is_correct_answer_int;
         nakadaka_count += 1;
-        document.getElementById("nakadaka-answers").innerHTML = "中高： " + correct_nakadaka_count + " of " + nakadaka_count + " (" + Math.floor(correct_nakadaka_count / nakadaka_count * 100) + "%)";
+        let percent = Math.floor(correct_nakadaka_count / nakadaka_count * 100);
+        let count_text = "" + correct_nakadaka_count + " of " + nakadaka_count;
+        // Update old format for compatibility
+        document.getElementById("nakadaka-answers").innerHTML = count_text + " (" + percent + "%)";
+        // Update new 3-column table
+        document.getElementById("nakadaka-answers-percent").innerHTML = percent + "%";
+        document.getElementById("nakadaka-answers-count").innerHTML = count_text;
+        applyPercentColor("nakadaka-answers-percent", percent);
     }
     let correct_all_count = correct_heiban_count + correct_atamadaka_count + correct_nakadaka_count;
     let all_count = heiban_count + atamadaka_count + nakadaka_count;
-    document.getElementById("all-answers").innerHTML = "全て： " + correct_all_count + " of " + all_count + " (" + Math.floor(correct_all_count / all_count * 100) + "%)<br>";
+    let all_percent = all_count > 0 ? Math.floor(correct_all_count / all_count * 100) : 0;
+    let all_count_text = "" + correct_all_count + " of " + all_count;
+    // Update old format for compatibility
+    document.getElementById("all-answers").innerHTML = all_count_text + " (" + all_percent + "%)<br>";
+    // Update new 3-column table
+    document.getElementById("all-answers-percent").innerHTML = all_percent + "%";
+    document.getElementById("all-answers-count").innerHTML = all_count_text;
+    const allPatternName = document.querySelector(".patterns-table tr:first-child");
+    applyPercentColor("all-answers-percent", all_percent, [allPatternName]);
 }
 
 function update_history(correct_answer, is_correct_answer) {
@@ -268,7 +356,7 @@ function quit_application() {
     if (window.markIntentionalQuit) {
         window.markIntentionalQuit();
     }
-    
+
     fetch('/shutdown', {
         method: 'POST',
         headers: {
@@ -376,11 +464,13 @@ document.addEventListener("keydown", (e) => {
             break;
         }
         case "continue": {
-            if (document.querySelector("#continue-button-button").checkVisibility({visibilityProperty: true})) {
-                fetch_random_pair();
-            }
             if (!test_started) {
                 start_test();
+                break;
+            }
+            const continueWrapper = document.querySelector("#continue-button");
+            if (continueWrapper && !continueWrapper.classList.contains("continue-hidden")) {
+                fetch_random_pair();
             }
             break;
         }
@@ -408,6 +498,14 @@ function initializeShortcuts() {
         let key = inputValue;
         if (inputValue === "Space") {
             key = " ";
+        } else if (inputValue === "←") {
+            key = "ArrowLeft";
+        } else if (inputValue === "→") {
+            key = "ArrowRight";
+        } else if (inputValue === "↑") {
+            key = "ArrowUp";
+        } else if (inputValue === "↓") {
+            key = "ArrowDown";
         }
 
         shortcuts[shortcutId] = {
@@ -417,11 +515,17 @@ function initializeShortcuts() {
             meta: false,
             key: key,
         };
+
+        // Add arrow-key class for styling if value contains arrows
+        if (inputValue === "←" || inputValue === "→" || inputValue === "↑" || inputValue === "↓") {
+            element.classList.add('arrow-key');
+        }
     }
 }
 
 // Initialize shortcuts on page load
 initializeShortcuts();
+initializePercentColors();
 
 // Auto-start test on page load
 window.addEventListener('load', () => {
@@ -442,7 +546,27 @@ for (const element of document.querySelectorAll(".shortcut-input")) {
         }
 
         let modifiers_string = (e.ctrlKey ? "^" : "") + (e.shiftKey ? "+" : "") + (e.altKey ? "!" : "") + (e.metaKey ? "#" : "");
-        let key_string = e.key === " " ? "Space" : e.key;
+        let key_string;
+        if (e.key === " ") {
+            key_string = "Space";
+        } else if (e.key === "ArrowLeft") {
+            key_string = "←";
+        } else if (e.key === "ArrowRight") {
+            key_string = "→";
+        } else if (e.key === "ArrowUp") {
+            key_string = "↑";
+        } else if (e.key === "ArrowDown") {
+            key_string = "↓";
+        } else {
+            key_string = e.key;
+        }
         e.target.value = modifiers_string + key_string;
+
+        // Add or remove arrow-key class for styling
+        if (key_string === "←" || key_string === "→" || key_string === "↑" || key_string === "↓") {
+            e.target.classList.add('arrow-key');
+        } else {
+            e.target.classList.remove('arrow-key');
+        }
     });
 }

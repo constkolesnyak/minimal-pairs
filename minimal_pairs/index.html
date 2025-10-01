@@ -7,179 +7,136 @@
     <meta name="description" content="Minimal pairs Japanese pitch accent test">
     <title>Minimal Pairs</title>
     <link href="css/styles.css" rel="stylesheet">
-    <link href="css/styles_override.css" rel="stylesheet">
     <script src="js/minimal_pairs.js" type="module"></script>
     <script src="js/shutdown_handler.js" type="module"></script>
     <link rel="icon" href="data:;base64,iVBORw0KGgo=">
 </head>
 <body>
-    <div id="app-container" class="p-4 container">
-        <div class="row">
-            <div class="order-2 order-lg-0 mt-3 mt-lg-0 col-lg-3 col-12">
-                <h4 class="text-center">History</h4>
-                <div class="overflow-auto hide-scrollbar max-vh-75 list-group" id="pairs-history">
+    <main id="app-container" class="app-shell">
+        <div class="layout">
+            <section class="panel history-panel">
+                <h2 class="panel-title">History</h2>
+                <div class="history-list list-group hide-scrollbar" id="pairs-history"></div>
+            </section>
+
+            <section class="panel main-panel">
+                <div class="start-card" id="start-info">
+                    <div class="alert" role="alert"></div>
+                    <button type="button" class="btn btn-primary start-button" id="start-test-button">Start</button>
                 </div>
-            </div>
-            <div class="text-center order-0 order-lg-1 col-lg-6 col-12" id="start-info">
-                <div role="alert" class="fade text-start mt-3 alert alert-dark alert-dismissible show">
-                </div>
-                <div class="d-grid"><button type="button" class="btn btn-primary" id="start-test-button">Start</button></div>
-            </div>
-            <div class="text-center order-0 order-lg-1 col-lg-6 col-12 element-hidden" id="test-area">
-                <h3 class="text-center" id="kana-text">〇〇</h3>
-                <audio controls="" autoplay id="pair-sound-player" src="data:audio/ogg;base64" type="audio/mpeg"></audio>
-                <hr class="mt-2">
-                <div class="row" id="answer-button-row">
-                    <div class="col">
-                        <div class="d-grid">
-                            <button type="button" class="btn btn-primary">〇〇</button>
+
+                <div class="test-card element-hidden" id="test-area">
+                    <h2 class="kana-heading" id="kana-text">〇〇</h2>
+                    <audio id="pair-sound-player" class="audio-player" controls autoplay src="data:audio/ogg;base64" type="audio/mpeg"></audio>
+
+                    <div class="row button-row" id="answer-button-row">
+                        <div class="col">
+                            <div class="d-grid">
+                                <button type="button" class="btn btn-primary">〇〇</button>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="d-grid">
+                                <button type="button" class="btn btn-primary">〇〇</button>
+                            </div>
                         </div>
                     </div>
-                    <div class="col">
-                        <div class="d-grid">
-                            <button type="button" class="btn btn-primary">〇〇</button>
-                        </div>
+
+                    <div class="row button-row element-hidden" id="graded-answer-button-row"></div>
+
+                    <div class="continue-wrapper continue-hidden" id="continue-button">
+                        <button class="btn btn-primary" type="button" id="continue-button-button">Continue</button>
                     </div>
+
+                    <section class="patterns-card patterns-section">
+                        <h3 class="panel-title">Patterns</h3>
+                        <table class="patterns-table">
+                            <tr>
+                                <td class="pattern-name">全て</td>
+                                <td class="pattern-percent" id="all-answers-percent">0%</td>
+                                <td class="pattern-count" id="all-answers-count">0 of 0</td>
+                            </tr>
+                            <tr>
+                                <td class="pattern-name">平板・尾高</td>
+                                <td class="pattern-percent" id="heiban-answers-percent">0%</td>
+                                <td class="pattern-count" id="heiban-answers-count">0 of 0</td>
+                            </tr>
+                            <tr>
+                                <td class="pattern-name">頭高</td>
+                                <td class="pattern-percent" id="atamadaka-answers-percent">0%</td>
+                                <td class="pattern-count" id="atamadaka-answers-count">0 of 0</td>
+                            </tr>
+                            <tr>
+                                <td class="pattern-name">中高</td>
+                                <td class="pattern-percent" id="nakadaka-answers-percent">0%</td>
+                                <td class="pattern-count" id="nakadaka-answers-count">0 of 0</td>
+                            </tr>
+                        </table>
+
+                        <span class="legacy-stat" id="all-answers">0 of 0 (0%)</span>
+                        <span class="legacy-stat" id="heiban-answers">0 of 0 (0%)</span>
+                        <span class="legacy-stat" id="atamadaka-answers">0 of 0 (0%)</span>
+                        <span class="legacy-stat" id="nakadaka-answers">0 of 0 (0%)</span>
+
+                        <input type="checkbox" class="pair-checkbox-input refresh-pair-checkbox" id="pitch0" checked hidden>
+                        <input type="checkbox" class="pair-checkbox-input refresh-pair-checkbox" id="pitch1" checked hidden>
+                        <input type="checkbox" class="pair-checkbox-input refresh-pair-checkbox" id="pitch2" checked hidden>
+                        <input type="checkbox" class="pair-checkbox-input refresh-pair-checkbox" id="pitch3" checked hidden>
+                        <input type="checkbox" class="pair-checkbox-input refresh-pair-checkbox" id="pitch4" checked hidden>
+                    </section>
                 </div>
-                <div class="row element-hidden" id="graded-answer-button-row"></div>
-                <div id="continue-button" style="display:inline;" class="continue-hidden">
-                    <hr><button class="col-12 btn btn-primary" type="button" id="continue-button-button">Continue</button>
-                </div>
-            </div>
-            <div class="order-1 order-lg-2 mt-3 mt-lg-0 col-lg-3 col-12">
-                <h4 class="text-center">Patterns</h4>
-                <div>
-                    <span id="all-answers">
-                        全て： 0 of 0 (0%)<br>
-                    </span>
-                    <span id="heiban-answers">
-                        平板・尾高： 0 of 0 (0%)
-                    </span>
-                    <div class="options-group">
-                        <input type="checkbox" class="form-check-input me-2 form-check-inline pair-checkbox-input refresh-pair-checkbox" id="pitch0" checked>
-                        <span class="text-muted">
-                            <label for="pitch0" class="visual-element-type-showPitchAccentDrops">
-                                <phrase-element>
-                                    <visual-element>
-                                        <span>◯</span><marking-element class="overline"><span>◯</span><span>◯</span><span>◯</span></marking-element>
-                                    </visual-element>
-                                </phrase-element>
-                                <space-element></space-element>
-                                <phrase-element>
-                                    <visual-element><span>｜</span><marking-element class="overline"></marking-element></visual-element>
-                                </phrase-element>
-                                <space-element></space-element>
-                                <phrase-element>
-                                    <visual-element>
-                                        <span>◯</span><marking-element class="overline"><span>◯</span><span>◯</span></marking-element><marking-element class="drop"><span>◯</span></marking-element>
-                                    </visual-element>
-                                </phrase-element>
-                            </label>
-                        </span>
-                    </div>
-                    <span id="atamadaka-answers">
-                        頭高： 0 of 0 (0%)
-                    </span>
-                    <div class="options-group">
-                        <input type="checkbox" class="form-check-input me-2 form-check-inline pair-checkbox-input refresh-pair-checkbox" id="pitch1" checked>
-                        <span class="text-muted">
-                            <label for="pitch1" class="visual-element-type-showPitchAccentDrops">
-                                <phrase-element>
-                                    <visual-element>
-                                        <marking-element class="drop"><span>◯</span></marking-element><span>◯</span><span>◯</span><span>◯</span>
-                                    </visual-element>
-                                </phrase-element>
-                            </label>
-                        </span>
-                    </div>
-                    <span id="nakadaka-answers">
-                        中高： 0 of 0 (0%)
-                    </span>
-                    <div class="options-group">
-                        <input type="checkbox" class="form-check-input me-2 form-check-inline pair-checkbox-input refresh-pair-checkbox" id="pitch2" checked>
-                        <span class="text-muted">
-                            <label for="pitch2" class="visual-element-type-showPitchAccentDrops">
-                                <phrase-element>
-                                    <visual-element>
-                                        <span>◯</span><marking-element class="drop"><span>◯</span></marking-element><span>〜</span><span>◯</span><span>◯</span>
-                                    </visual-element>
-                                </phrase-element>
-                            </label>
-                        </span>
-                    </div>
-                    <div class="options-group">
-                        <input type="checkbox" class="form-check-input me-2 form-check-inline pair-checkbox-input refresh-pair-checkbox" id="pitch3" checked>
-                        <span class="text-muted">
-                            <label for="pitch3" class="visual-element-type-showPitchAccentDrops">
-                                <phrase-element>
-                                    <visual-element>
-                                        <span>◯</span><marking-element class="overline"><span>◯</span><span>〜</span></marking-element><marking-element class="drop"><span>◯</span></marking-element><span>〜</span><span>◯</span><span>◯</span>
-                                    </visual-element>
-                                </phrase-element>
-                            </label>
-                        </span>
-                    </div>
-                    <div class="options-group">
-                        <input type="checkbox" class="form-check-input me-2 form-check-inline pair-checkbox-input refresh-pair-checkbox" id="pitch4" checked>
-                        <span class="text-muted">
-                            <label for="pitch4" class="visual-element-type-showPitchAccentDrops">
-                                <phrase-element>
-                                    <visual-element>
-                                        <span>◯</span><marking-element class="overline"><span>◯</span><span>〜</span></marking-element><marking-element class="drop"><span>◯</span></marking-element><span>◯</span>
-                                    </visual-element>
-                                </phrase-element>
-                            </label>
-                        </span>
-                    </div>
-                </div>
-                <div>
-                    <h4 class="text-center mt-2">Other</h4>
-                    <div class="options-group">
-                        <input type="checkbox" class="form-check-input me-2 form-check-inline pair-checkbox-input refresh-pair-checkbox" id="devoiced">
-                        <label for="devoiced" class="text-muted">Only Devoiced Words</label>
-                    </div>
-                    <div class="options-group">
-                        <input type="checkbox" class="form-check-input me-2 form-check-inline pair-checkbox-input refresh-pair-checkbox" id="strict-pair-finding">
-                        <label for="strict-pair-finding" class="text-muted">Strict Pair Finding</label>
-                    </div>
-                    <div class="options-group">
-                        <input type="checkbox" class="form-check-input me-2 form-check-inline pair-checkbox-input" id="pause-after-correct">
-                        <label for="pause-after-correct" class="text-muted">Pause After Correct Answers</label>
-                    </div>
-                </div>
-                <div>
-                    <h4 class="text-center mt-2">Shortcuts</h4>
+            </section>
+
+            <aside class="panel sidebar-panel">
+                <section class="card sidebar-section">
+                    <h2 class="panel-title">Options</h2>
+                    <label class="options-group" for="devoiced">
+                        <input type="checkbox" class="pair-checkbox-input refresh-pair-checkbox" id="devoiced">
+                        <span class="option-label">Only Devoiced Words</span>
+                    </label>
+                    <label class="options-group" for="strict-pair-finding">
+                        <input type="checkbox" class="pair-checkbox-input refresh-pair-checkbox" id="strict-pair-finding">
+                        <span class="option-label">Strict Pair Finding</span>
+                    </label>
+                    <label class="options-group" for="pause-after-correct">
+                        <input type="checkbox" class="pair-checkbox-input" id="pause-after-correct">
+                        <span class="option-label">Pause After Correct Answers</span>
+                    </label>
+                </section>
+
+                <section class="card sidebar-section">
+                    <h2 class="panel-title">Shortcuts</h2>
                     <div id="shortcuts-container">
                         <div class="shortcut-wrapper">
-                            <label class="text-muted" for="answer_button_1">Answer buttons&nbsp;</label>
+                            <label class="shortcut-label" for="answer_button_1">Answer buttons</label>
                             <div class="shortcut-input-container">
-                                <input type="text" value="ArrowLeft" class="shortcut-input form-text" id="answer_button_1">
-                                <input type="text" value="ArrowRight" class="shortcut-input form-text" id="answer_button_2">
-                                <input type="text" value="/" class="shortcut-input form-text" id="answer_button_3">
+                                <input type="text" value="←" class="shortcut-input" id="answer_button_1">
+                                <input type="text" value="→" class="shortcut-input" id="answer_button_2">
+                                <input type="text" value="/" class="shortcut-input" id="answer_button_3">
                             </div>
                         </div>
                         <div class="shortcut-wrapper">
-                            <label class="text-muted" for="continue">Continue&nbsp;</label>
+                            <label class="shortcut-label" for="continue">Continue</label>
                             <div class="shortcut-input-container">
-                                <input type="text" value="ArrowUp" class="shortcut-input form-text" id="continue">
+                                <input type="text" value="↑" class="shortcut-input" id="continue">
                             </div>
                         </div>
                         <div class="shortcut-wrapper">
-                            <label class="text-muted" for="play_audio">Play Audio&nbsp;</label>
+                            <label class="shortcut-label" for="play_audio">Play Audio</label>
                             <div class="shortcut-input-container">
-                                <input type="text" value="ArrowDown"  class="shortcut-input form-text" id="play_audio">
+                                <input type="text" value="↓" class="shortcut-input" id="play_audio">
                             </div>
                         </div>
                         <div class="shortcut-wrapper">
-                            <label class="text-muted" for="quit">Quit&nbsp;</label>
+                            <label class="shortcut-label" for="quit">Quit</label>
                             <div class="shortcut-input-container">
-                                <input type="text" value="q" class="shortcut-input form-text" id="quit">
+                                <input type="text" value="q" class="shortcut-input" id="quit">
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
+                </section>
+            </aside>
         </div>
-    </div>
+    </main>
 </body>
 </html>
