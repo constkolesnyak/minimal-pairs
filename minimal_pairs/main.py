@@ -18,7 +18,7 @@ async def read_index() -> FileResponse:
     return FileResponse('index.html')
 
 
-def main():
+def main() -> None:
     for port in range(8000, 8050):
         try:
             with socket.socket() as s:
@@ -32,9 +32,13 @@ def main():
 
     print(f'Server running on http://localhost:{port}')
     threading.Thread(
-        target=lambda: (time.sleep(1), webbrowser.open(f'http://localhost:{port}')), daemon=True
+        target=lambda: (
+            time.sleep(0.5),
+            webbrowser.open(f'http://localhost:{port}'),
+        ),
+        daemon=True,
     ).start()
-    
+
     uvicorn.run(app, host='localhost', port=port, log_level='warning')
 
 
