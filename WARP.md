@@ -4,32 +4,61 @@ This file provides guidance to WARP (warp.dev) when working with code in this re
 
 ## Project Overview
 
-This is a static web application for Japanese pitch accent minimal pairs perception testing. It's a rewritten version of the original [コツ minimal pairs test](https://kotu.io/tests/pitchAccent/perception/minimalPairs) optimized for static hosting with improved performance and additional features.
+This is a static web application for Japanese pitch accent minimal pairs perception testing. It's a fork of the original [コツ minimal pairs test](https://kotu.io/tests/pitchAccent/perception/minimalPairs) optimized for static hosting with improved performance and additional features.
+
+## Development Setup
+
+### Prerequisites
+- Python 3.13.*
+- Poetry (for dependency management)
+
+### Installation
+```bash
+# Install the package in development mode
+poetry install
+
+# Or install directly from git
+pipx install git+https://github.com/constkolesnyak/minimal-pairs
+```
 
 ## Development Commands
 
 ### Server Management
-- **Start local development server**: `python -m http.server --bind localhost`
-  - Alternative scripts: `./run.sh` or `run.bat` on Windows
+- **Start FastAPI development server**: `poetry run kmpt` or `kmpt` (if installed via pipx)
+  - Modern FastAPI-based server with automatic browser opening
+  - Auto-detects available ports (8000-8049)
+  - Includes proper static file serving
+
+- **Alternative (simple server)**: `python -m http.server --bind localhost`
+  - Basic HTTP server for quick testing
   - Server typically runs on port 8000
 
 ### Data Validation and Processing
-- **Validate data integrity**: `python pairs_validator.py`
+- **Validate data integrity**: `python dev/pairs_validator.py`
   - Checks for consistency in rawPronunciation, moraCount, silencedMoras across pairs
   - Validates base64 encoding of audio data
   - Reports mismatches with colored output (red for failures, green for passes)
 
-- **Generate pairs index**: `python pairs_index_generator.py`
+- **Generate pairs index**: `python dev/pairs_index_generator.py`
   - Processes all JSON files in the `data/` directory
   - Creates `js/pairs_index.js` with pitch accent categorizations
   - Categorizes pairs by pitch patterns (pitch0-pitch4) and devoicing
 
 ### Code Quality
-- **JavaScript linting**: ESLint configuration exists (`eslint.config.mjs`) but requires installation
+- **JavaScript linting**: ESLint configuration exists (`dev/eslint.config.mjs`)
   - Install: `npm install eslint @eslint/js globals`
   - Run: `npx eslint js/`
 
 ## Code Architecture
+
+### Package Structure
+- **Python Package**: `minimal_pairs/` - Contains the FastAPI server implementation
+  - `main.py` - FastAPI server with automatic port detection and browser opening
+  - Entry point: `kmpt` command (defined in pyproject.toml)
+- **Development Tools**: `dev/` - Contains validation and build utilities
+  - `pairs_validator.py` - Data integrity validation
+  - `pairs_index_generator.py` - Index generation
+  - `eslint.config.mjs` - JavaScript linting configuration
 
 ### Frontend Structure
 - **Entry point**: `index.html` - Main application interface with test controls and options
@@ -52,8 +81,8 @@ This is a static web application for Japanese pitch accent minimal pairs percept
 
 ### Build Process
 The application requires two Python utilities to be run after data changes:
-1. `pairs_validator.py` - Ensures data consistency
-2. `pairs_index_generator.py` - Rebuilds the search index
+1. `python dev/pairs_validator.py` - Ensures data consistency
+2. `python dev/pairs_index_generator.py` - Rebuilds the search index
 
 ### Notable Implementation Details
 - **Static hosting optimization**: Fully client-side application with no backend dependencies
