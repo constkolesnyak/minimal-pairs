@@ -5,6 +5,7 @@ description = 'Japanese pitch accent minimal pairs perception test'
 authors = ['-']
 readme = 'README.md'
 package-mode = true
+packages = [{ include = "minimal_pairs" }]
 
 [tool.poetry.scripts]
 kmpt = 'minimal_pairs.main:main'
