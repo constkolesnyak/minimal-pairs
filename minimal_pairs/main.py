@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import os
 import socket
 import threading
 import time
@@ -9,13 +10,16 @@ from fastapi import FastAPI
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 
+# Use the directory containing this file (where static files are now located)
+static_dir = os.path.dirname(os.path.abspath(__file__))
+
 app = FastAPI()
-app.mount('/', StaticFiles(directory='.', html=True), name='static')
+app.mount('/', StaticFiles(directory=static_dir, html=True), name='static')
 
 
 @app.get('/')
 async def read_index() -> FileResponse:
-    return FileResponse('index.html')
+    return FileResponse(os.path.join(static_dir, 'index.html'))
 
 
 def main() -> None:
