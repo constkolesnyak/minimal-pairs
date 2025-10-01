@@ -264,6 +264,11 @@ function play_pair_audio() {
 }
 
 function quit_application() {
+    // Mark this as an intentional quit to allow shutdown
+    if (window.markIntentionalQuit) {
+        window.markIntentionalQuit();
+    }
+    
     fetch('/shutdown', {
         method: 'POST',
         headers: {
