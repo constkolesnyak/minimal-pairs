@@ -9,7 +9,7 @@ which is itself a backup of the [コツ minimal pairs test](https://kotu.io/test
     pipx install ./minimal-pairs
     rm -rf minimal-pairs
 
-This won't work: `pipx install git+https...`
+_Don't do this:_ `pipx install git+https...`
 
 ## Run
 
