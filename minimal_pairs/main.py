@@ -4,6 +4,7 @@ import socket
 import threading
 import time
 import webbrowser
+from typing import Any, NoReturn
 
 import uvicorn
 from fastapi import FastAPI
@@ -12,19 +13,16 @@ from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 
 package_dir = os.path.dirname(os.path.abspath(__file__))
-app = FastAPI()
+shutdown_requested = False
 
-# Add CORS middleware to handle requests from the frontend
+app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # In production, you'd want to be more specific
+    allow_origins=['*'],
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=['*'],
+    allow_headers=['*'],
 )
-
-# Global variable to control server shutdown
-shutdown_requested = False
 
 
 @app.get('/')
@@ -34,24 +32,20 @@ async def read_index() -> FileResponse:
 
 @app.post('/shutdown')
 async def shutdown() -> JSONResponse:
-    """Endpoint to gracefully shutdown the server when browser window is closed."""
     global shutdown_requested
     if shutdown_requested:
-        return JSONResponse({"status": "already_shutting_down"})
-    
+        return JSONResponse({'status': 'already_shutting_down'})
+
     shutdown_requested = True
-    
-    def delayed_shutdown():
+
+    def delayed_shutdown() -> None:
         time.sleep(0.2)
         os.kill(os.getpid(), signal.SIGTERM)
-    
+
     threading.Thread(target=delayed_shutdown, daemon=True).start()
-    return JSONResponse({"status": "shutdown_initiated"})
+    return JSONResponse({'status': 'shutdown_initiated'})
 
 
-
-
-# Mount static files after API routes to avoid conflicts
 app.mount('/', StaticFiles(directory=package_dir, html=True), name='static')
 
 
@@ -75,19 +69,20 @@ def main() -> None:
         daemon=True,
     ).start()
 
-    def signal_handler(signum, frame):
-        print("\nServer shutting down gracefully...")
+    def stop_server(*args: Any) -> NoReturn:
+        print('\nStopping...')
         exit(0)
-    
-    # Register signal handler for graceful shutdown
-    signal.signal(signal.SIGTERM, signal_handler)
-    signal.signal(signal.SIGINT, signal_handler)  # Ctrl+C
 
-    print(f'Serving on http://localhost:{port}')
-    print('Server will automatically stop when you close the browser window.')
-    print('Press Ctrl+C to stop manually.')
-    
+    signal.signal(signal.SIGTERM, stop_server)
+    signal.signal(signal.SIGINT, stop_server)
+
+    print(
+        f'Serving on http://localhost:{port}\n'
+        'Server will automatically stop when you close the browser window.\n'
+        'Press Ctrl+C to stop manually.'
+    )
+
     try:
         uvicorn.run(app, host='localhost', port=port, log_level='warning')
     except KeyboardInterrupt:
-        print("\nServer stopped by user.")
+        stop_server()
