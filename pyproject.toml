@@ -1,17 +1,17 @@
 [tool.poetry]
-name = "minimal-pairs"
-version = "0.1.0"
-description = "Japanese pitch accent minimal pairs perception test"
-authors = ["Your Name <you@example.com>"]
-readme = "README.md"
+name = 'minimal-pairs'
+version = '0.1'
+description = 'Japanese pitch accent minimal pairs perception test'
+authors = ['-']
+readme = 'README.md'
 package-mode = false
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = '3.13.*'
 
 [tool.poetry.group.dev.dependencies]
 
 
 [build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+requires = ['poetry-core']
+build-backend = 'poetry.core.masonry.api'
