@@ -15,7 +15,7 @@ which is itself a backup of the [コツ minimal pairs test](https://kotu.io/test
 
 - Better server: FastAPI + Uvicorn
 - Some additional features
-- Prettier UI
+- Pretty UI
 
 ## Before vs After
 
