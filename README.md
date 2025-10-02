@@ -5,11 +5,7 @@ which is itself a backup of the [コツ minimal pairs test](https://kotu.io/test
 
 ## Install
 
-    gh repo clone constkolesnyak/minimal-pairs
-    pipx install ./minimal-pairs
-    rm -rf minimal-pairs
-
-_Don't do this:_ `pipx install git+https...`
+    pipx install git+https://github.com/constkolesnyak/minimal-pairs
 
 ## Run
 
@@ -17,8 +13,8 @@ _Don't do this:_ `pipx install git+https...`
 
 ## My Changes
 
-- A bit here and there
 - More of Python
+- Some additional features
 - Better UI
 
 ## Before vs After
