@@ -11,11 +11,11 @@ which is itself a backup of the [コツ minimal pairs test](https://kotu.io/test
 
     kmpt
 
-## My Changes
+## My Improvements
 
-- More of Python
+- Better server: FastAPI + Uvicorn
 - Some additional features
-- Better UI
+- Prettier UI
 
 ## Before vs After
 
