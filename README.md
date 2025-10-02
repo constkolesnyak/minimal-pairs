@@ -17,6 +17,11 @@ _Don't do this:_ `pipx install git+https...`
 
 ## My Changes
 
-- More Python
-- Better UI
 - A bit here and there
+- More of Python
+- Better UI
+
+## Before vs After
+
+![](misc/before.png)
+![](misc/after.png)
