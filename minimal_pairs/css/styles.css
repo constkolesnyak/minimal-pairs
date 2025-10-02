@@ -76,7 +76,7 @@ body > * {
     width: 100%;
     max-width: 1440px;
     margin: 0 auto;
-    padding: 0.5rem 0 0rem;
+    padding: 0.2rem 0 0rem;
 }
 
 @media (max-width: 600px) {
@@ -624,6 +624,78 @@ body > * {
 .hide-scrollbar::-webkit-scrollbar-thumb {
     background-color: var(--scrollbar);
     border-radius: 999px;
+}
+
+/* Pitch accent visual elements */
+phrase-element {
+    display: inline;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    padding: 0.2em 0.1em;
+}
+
+visual-element {
+    display: inline;
+    position: relative;
+    padding: 0.1em 0.05em;
+}
+
+space-element {
+    display: inline;
+    margin: 0 0.4em;
+}
+
+marking-element {
+    border-top: 2px solid transparent;
+    vertical-align: bottom;
+    display: inline;
+    position: relative;
+    padding-top: 2px;
+}
+
+marking-element.overline {
+    border-top: 2px solid var(--brand);
+    border-radius: 1px;
+}
+
+marking-element.drop {
+    border-top: 2px solid var(--brand);
+    border-radius: 1px;
+    position: relative;
+}
+
+marking-element.drop::after {
+    content: "";
+    position: absolute;
+    right: -1.5px;
+    top: -1.5px;
+    width: 2px;
+    height: 8px;
+    background: var(--brand);
+    border-radius: 1px;
+}
+
+/* Pitch accent grid layout */
+.pitch-accent-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.pitch-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.separator {
+    font-size: 1.2rem;
+    color: var(--text-secondary);
+    font-weight: 600;
+    margin: 0 0.5rem;
 }
 
 main button,

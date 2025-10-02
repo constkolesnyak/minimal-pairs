@@ -527,6 +527,21 @@ function initializeShortcuts() {
 initializeShortcuts();
 initializePercentColors();
 
+// Add click handlers for options-group to toggle checkboxes
+for (const optionsGroup of document.querySelectorAll('.options-group')) {
+    optionsGroup.addEventListener('click', (e) => {
+        // Find the checkbox within this options-group
+        const checkbox = optionsGroup.querySelector('input[type="checkbox"]');
+        if (checkbox && e.target !== checkbox) {
+            // Only toggle if we didn't click directly on the checkbox
+            e.preventDefault();
+            checkbox.checked = !checkbox.checked;
+            // Trigger the checkbox's change event to maintain existing functionality
+            checkbox.dispatchEvent(new Event('click'));
+        }
+    });
+}
+
 // Auto-start test on page load
 window.addEventListener('load', () => {
     start_test();
