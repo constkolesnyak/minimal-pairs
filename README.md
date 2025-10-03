@@ -17,7 +17,7 @@ which is itself a backup of the [コツ minimal pairs test](https://kotu.io/test
 - Some additional features
 - Pretty UI
 
-## Before vs After
+### Before vs After
 
 ![](misc/before.png)
 ![](misc/after.png)
