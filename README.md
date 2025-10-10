@@ -1,28 +1,27 @@
 # Minimal Pairs
 
-A fork of [Kuuuube/minimal-pairs](https://github.com/Kuuuube/minimal-pairs)
-which is itself a backup of the [コツ minimal pairs test](https://kotu.io/tests/pitchAccent/perception/minimalPairs).
+[Try it online.](https://constkolesnyak.github.io/minimal-pairs)
 
-## Install
-
-Use [pipx](https://pipx.pypa.io):
+Or install and run it locally with [pipx](https://pipx.pypa.io):
 
     pipx install git+https://github.com/constkolesnyak/minimal-pairs
-
-## Run
-
     kmpt
+
+## About
+
+It's a fork of [Kuuuube/minimal-pairs](https://github.com/Kuuuube/minimal-pairs)
+which is itself a backup of the [コツ minimal pairs test](https://kotu.io/tests/pitchAccent/perception/minimalPairs).
+
+## After vs Before
+
+![](misc/after.png)
+![](misc/before.png)
 
 ## My Improvements
 
 - Better server: FastAPI + Uvicorn
 - Some additional features
 - Pretty UI
-
-### Before vs After
-
-![](misc/before.png)
-![](misc/after.png)
 
 ## GitHub Pages Hosting
 
