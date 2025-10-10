@@ -19,7 +19,7 @@ Use [pipx](https://pipx.pypa.io):
 - Some additional features
 - Pretty UI
 
-## Before vs After
+### Before vs After
 
 ![](misc/before.png)
 ![](misc/after.png)
