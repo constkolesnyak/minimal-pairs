@@ -5,6 +5,8 @@ which is itself a backup of the [コツ minimal pairs test](https://kotu.io/test
 
 ## Install
 
+Use [pipx](https://pipx.pypa.io):
+
     pipx install git+https://github.com/constkolesnyak/minimal-pairs
 
 ## Run
