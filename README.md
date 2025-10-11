@@ -2,7 +2,7 @@
 
 [Try it online.](https://constkolesnyak.github.io/minimal-pairs)
 
-Or install and run it locally with [pipx](https://pipx.pypa.io):
+Or install and run locally with [pipx](https://pipx.pypa.io):
 
     pipx install git+https://github.com/constkolesnyak/minimal-pairs
     kmpt
