@@ -123,6 +123,46 @@ let shortcuts = {
     },
 }
 
+const SHORTCUTS_STORAGE_KEY = "minimal_pairs_shortcuts";
+
+function saveShortcuts() {
+    try {
+        localStorage.setItem(SHORTCUTS_STORAGE_KEY, JSON.stringify(shortcuts));
+    } catch (e) {
+        // ignore storage errors (private mode / disabled storage)
+    }
+}
+
+function loadSavedShortcuts() {
+    try {
+        const raw = localStorage.getItem(SHORTCUTS_STORAGE_KEY);
+        return raw ? JSON.parse(raw) : null;
+    } catch (e) {
+        return null;
+    }
+}
+
+// Render a shortcut object into its display string + arrow flag.
+// Reused by initializeShortcuts() (loading saved) and the rebind handler.
+function formatShortcut(shortcut) {
+    const modifiers =
+        (shortcut.ctrl ? "^" : "") +
+        (shortcut.shift ? "+" : "") +
+        (shortcut.alt ? "!" : "") +
+        (shortcut.meta ? "#" : "");
+    let keyString;
+    switch (shortcut.key) {
+        case " ":          keyString = "Space"; break;
+        case "ArrowLeft":  keyString = "←";     break;
+        case "ArrowRight": keyString = "→";     break;
+        case "ArrowUp":    keyString = "↑";     break;
+        case "ArrowDown":  keyString = "↓";     break;
+        default:           keyString = shortcut.key;
+    }
+    const isArrow = ["←", "→", "↑", "↓"].includes(keyString);
+    return { display: modifiers + keyString, isArrow };
+}
+
 function start_test() {
     test_started = true;
     document.getElementById("start-info").classList.add("element-hidden");
@@ -501,6 +541,7 @@ document.addEventListener("keydown", (e) => {
 
 // Initialize shortcuts from HTML input values
 function initializeShortcuts() {
+    const saved = loadSavedShortcuts();
     for (const element of document.querySelectorAll(".shortcut-input")) {
         const inputValue = element.value;
         const shortcutId = element.id;
@@ -530,6 +571,14 @@ function initializeShortcuts() {
         // Add arrow-key class for styling if value contains arrows
         if (inputValue === "←" || inputValue === "→" || inputValue === "↑" || inputValue === "↓") {
             element.classList.add('arrow-key');
+        }
+
+        // Prefer a previously saved override, if present.
+        if (saved && saved[shortcutId]) {
+            shortcuts[shortcutId] = saved[shortcutId];
+            const { display, isArrow } = formatShortcut(saved[shortcutId]);
+            element.value = display;
+            element.classList.toggle("arrow-key", isArrow);
         }
     }
 }
@@ -571,28 +620,10 @@ for (const element of document.querySelectorAll(".shortcut-input")) {
             key: e.key,
         }
 
-        let modifiers_string = (e.ctrlKey ? "^" : "") + (e.shiftKey ? "+" : "") + (e.altKey ? "!" : "") + (e.metaKey ? "#" : "");
-        let key_string;
-        if (e.key === " ") {
-            key_string = "Space";
-        } else if (e.key === "ArrowLeft") {
-            key_string = "←";
-        } else if (e.key === "ArrowRight") {
-            key_string = "→";
-        } else if (e.key === "ArrowUp") {
-            key_string = "↑";
-        } else if (e.key === "ArrowDown") {
-            key_string = "↓";
-        } else {
-            key_string = e.key;
-        }
-        e.target.value = modifiers_string + key_string;
+        const { display, isArrow } = formatShortcut(shortcuts[e.target.id]);
+        e.target.value = display;
+        e.target.classList.toggle('arrow-key', isArrow);
 
-        // Add or remove arrow-key class for styling
-        if (key_string === "←" || key_string === "→" || key_string === "↑" || key_string === "↓") {
-            e.target.classList.add('arrow-key');
-        } else {
-            e.target.classList.remove('arrow-key');
-        }
+        saveShortcuts();
     });
 }
