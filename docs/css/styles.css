@@ -315,34 +315,54 @@ body > * {
     box-shadow: none;
 }
 
+/* Unfilled by design: only the answer you picked gets a colour (green/red), so
+   the neutral state stays quiet. Border width must remain 1px to match .btn --
+   the graded row puts these side by side with .btn-success/.btn-danger. */
 .btn-primary {
-    background: #2d4a73;
+    background: var(--surface-muted);
+    border-color: var(--surface-border);
+    color: var(--text-primary);
 }
 
 .btn-primary:hover {
-    background: var(--brand-hover);
+    background: var(--surface-muted);
+    border-color: var(--brand);
 }
 
 .btn-primary:active {
-    background: var(--brand-active);
+    background: var(--surface-border);
+    border-color: var(--brand);
 }
 
 .btn-success {
-    background: #166534;
+    background: #16a34a;
 }
 
 .btn-success:hover {
-    background: #16a34a;
-    box-shadow: 0 12px 22px rgba(22, 163, 74, 0.22);
+    background: #1cb955;
+    box-shadow: 0 12px 22px rgba(22, 163, 74, 0.3);
+}
+
+/* Ring marking the correct answer. --accent-success already flips per theme
+   (#15803d light / #4ade80 dark), so it reads against the neutral button in
+   both. On the green fill it would vanish into the background, hence the
+   lighter override below. */
+.btn-correct-outline {
+    outline: 6px solid var(--accent-success);
+    outline-offset: -6px;
+}
+
+.btn-success.btn-correct-outline {
+    outline-color: #bbf7d0;
 }
 
 .btn-danger {
-    background: #7f1d1d;
+    background: #dc2626;
 }
 
 .btn-danger:hover {
-    background: #dc2626;
-    box-shadow: 0 12px 22px rgba(220, 38, 38, 0.22);
+    background: #ef4444;
+    box-shadow: 0 12px 22px rgba(220, 38, 38, 0.3);
 }
 
 .continue-wrapper {

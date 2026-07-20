@@ -177,7 +177,7 @@ function submit_answer(answer) {
     }
     update_answer_stats(active_pitch_type, is_correct_answer);
     update_history(current_correct_answer, is_correct_answer);
-    show_graded_buttons();
+    show_graded_buttons(answer, is_correct_answer);
     let pause_after_correct = document.querySelector("#pause-after-correct").checked;
     if (is_correct_answer && !pause_after_correct) {
         setTimeout(fetch_random_pair, 750);
@@ -273,11 +273,11 @@ function update_answer_buttons(json_data, correct_answer_index) {
         let graded_answer_button_row_wrapper = document.createElement("div");
         graded_answer_button_row_wrapper.classList.add("col", "d-grid");
 
+        let graded_button_classes = "btn btn-primary";
         if (index === correct_answer_index) {
-            graded_answer_button_row_wrapper.innerHTML = button_sound_player + '<button type="button" class="btn btn-success">' + entry + '</button>';
-        } else {
-            graded_answer_button_row_wrapper.innerHTML = button_sound_player + '<button type="button" class="btn btn-danger">' + entry + '</button>';
+            graded_button_classes += " btn-correct-outline";
         }
+        graded_answer_button_row_wrapper.innerHTML = button_sound_player + '<button type="button" class="' + graded_button_classes + '">' + entry + '</button>';
         graded_answer_button_row_wrapper.addEventListener("click", () => {document.getElementById("audio_index_" + index).play()})
 
         graded_answer_button_row.classList.add("element-hidden");
@@ -306,8 +306,12 @@ function set_pitch(json_data, pairs_index) {
     }
 }
 
-function show_graded_buttons() {
-    document.getElementById("graded-answer-button-row").classList.remove("element-hidden");
+function show_graded_buttons(selected_index, is_correct_answer) {
+    let graded_answer_button_row = document.getElementById("graded-answer-button-row");
+    let selected_button = graded_answer_button_row.children[selected_index].querySelector("button");
+    selected_button.classList.remove("btn-primary");
+    selected_button.classList.add(is_correct_answer ? "btn-success" : "btn-danger");
+    graded_answer_button_row.classList.remove("element-hidden");
     document.getElementById("answer-button-row").classList.add("element-hidden");
 }
 
